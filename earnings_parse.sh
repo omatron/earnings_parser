@@ -8,7 +8,7 @@ echo '"Liquid.";"Movim.";"Histrico";"Lanamento";"Saldo";"Cdigo";"StatementNumber
 
 for FILE in Extrato_*.csv
     do
-        echo $FILE
+        #echo $FILE
         sed 1,2d $FILE >> full.csv
     done
 
@@ -24,12 +24,22 @@ while read p; do
 done <acoes.txt
 
 #Soma as linhas
-while read p; do
-    echo "" >> $p"_div.csv"
-    awk '{s+=$1} END {print s}' $p"_div.csv" >> $p"_div.csv"
+echo > div_total.csv
+while read p
+do
+    echo $p
+    sum=`awk '{s+=$1} END {print s}' $p"_div.csv" `
+    echo $sum
+    # filter=$(egrep "[0-9]{1,5}\.[0-9]{1,2}" $sum)
+    # echo $filter
+    # if (( $(egrep "[0-9]{1,5}\.[0-9]{1,2}" $sum) ))
+    #     then
+    #         echo "$p;"$sum";" >> div_total.csv
+    #     else
+    #         echo else
+    #     fi
 
-    echo "" >> $p"_ren.csv"
-    awk '{s+=$1} END {print s}' $p"_ren.csv" >> $p"_ren.csv"
+    #awk '{s+=$1} END {print s}' $p"_ren.csv" >> $p"_ren.csv"
 done <acoes.txt
 
 
