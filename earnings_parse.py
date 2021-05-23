@@ -7,7 +7,7 @@ lista_acoes=[]
 lista_jcp=[]
 
 
-with open('../full.csv', encoding="utf8", errors="replace") as f, open('../fixed.csv', 'w', encoding="utf8", errors="replace") as out:
+with open('../full.csv', encoding="utf8", errors="replace") as f:
     reader = f.readlines()
     
     # Constrói a lista de ativos
