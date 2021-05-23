@@ -27,7 +27,7 @@ with open('../full.csv', encoding="utf8", errors="replace") as f, open('../fixed
     lista_acoes_u = list(dict.fromkeys(lista_acoes))
     lista_jcp_u = list(dict.fromkeys(lista_jcp))
     
-    # Busca os ativos no arquivo
+    # Busca por dividendos (Acoes)
     for acoes in lista_acoes_u:
         lista_valores=[]
         for line in reader:
@@ -43,8 +43,24 @@ with open('../full.csv', encoding="utf8", errors="replace") as f, open('../fixed
         soma=sum(lista_valores)
         if soma > 0:
             print("Dividendos: ",acoes,sum(lista_valores))
-    # for items in lista_jcp_u:
-    #     print(items)
+
+    # Busca por proventos (FII)
+    for acoes in lista_acoes_u:
+        lista_valores=[]
+        for line in reader:
+        
+            if re.search(acoes,line):
+                colunas=line.split(";")
+                # print(colunas[5])
+                if colunas[5] == "200":
+                    valores=float(re.sub(",",".",colunas[3]))
+                    # print("achou",acoes,valores)
+                    lista_valores.append(valores)
+                    # print(colunas[3])
+        soma=sum(lista_valores)
+        if soma > 0:
+            print("Proventos: ",acoes,sum(lista_valores))
+   
 
 f.close()
 
