@@ -17,7 +17,7 @@ with open('../full.csv', encoding="utf8", errors="replace") as f, open('../fixed
         ativo=colunas[2]
         #print(coluna)
         find_acoes=re.findall('ACOES ([A-Z]{4}[0-9]{1,2})',ativo)
-        find_jcp=re.findall(' BR([A-Z]{9}[0-9]{1,2})',ativo)
+        find_jcp=re.findall(' (BR[A-Z]{9}[0-9]{1,2})',ativo)
         
         if find_acoes:
             lista_acoes.append(find_acoes[0])
@@ -34,8 +34,9 @@ with open('../full.csv', encoding="utf8", errors="replace") as f, open('../fixed
         
             if re.search(acoes,line):
                 colunas=line.split(";")
-                # print(colunas[5])
-                if colunas[5] == "22":
+                # Codigo da operação 
+                codigo=colunas[5]
+                if codigo == "22":
                     valores=float(re.sub(",",".",colunas[3]))
                     # print("achou",acoes,valores)
                     lista_valores.append(valores)
@@ -44,6 +45,24 @@ with open('../full.csv', encoding="utf8", errors="replace") as f, open('../fixed
         if soma > 0:
             print("Dividendos: ",acoes,sum(lista_valores))
 
+    # Busca por JCP (Acoes)
+    for acoes in lista_jcp_u:
+        lista_valores=[]
+        for line in reader:
+        
+            if re.search(acoes,line):
+                colunas=line.split(";")
+                # Codigo da operação 
+                codigo=colunas[5]
+                if colunas[5] == "79":
+                    valores=float(re.sub(",",".",colunas[3]))
+                    # print("achou",acoes,valores)
+                    lista_valores.append(valores)
+                    # print(colunas[3])
+        soma=sum(lista_valores)
+        if soma > 0:
+            print("JCP: ",acoes,sum(lista_valores))
+
     # Busca por proventos (FII)
     for acoes in lista_acoes_u:
         lista_valores=[]
@@ -51,8 +70,9 @@ with open('../full.csv', encoding="utf8", errors="replace") as f, open('../fixed
         
             if re.search(acoes,line):
                 colunas=line.split(";")
-                # print(colunas[5])
-                if colunas[5] == "200":
+                # Codigo da operação 
+                codigo=colunas[5]
+                if codigo == "200":
                     valores=float(re.sub(",",".",colunas[3]))
                     # print("achou",acoes,valores)
                     lista_valores.append(valores)
